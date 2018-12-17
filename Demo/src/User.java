@@ -8,18 +8,18 @@ public class User implements Serializable {
 	private static final long serialVersionUID = -7185447814341077688L;
 	private String change;
 	private String pwchange;
-
-	public User(String name, String password) {
+    private String answer;
+	public User(String change, String pwchange) {
 		super();
 		this.change = change;
 		this.pwchange = pwchange;
 	}
 
-	public String getName() {
+	public String getChange() {
 		return change;
 	}
 
-	public void setName(String name) {
+	public void setChange(String change) {
 		this.change = change;
 	}
 
@@ -27,8 +27,8 @@ public class User implements Serializable {
 		return pwchange;
 	}
 
-	public void setPassword(String password) {
-		this.pwchange = password;
+	public void setPassword(String pwchange) {
+		this.pwchange = pwchange;
 	}
 
 	@Override
@@ -36,4 +36,18 @@ public class User implements Serializable {
 		return "User [change=" + change + ", pwchange=" + pwchange + "]";
 	}
 
+	public User(String answer) {
+		super();
+		this.answer = answer;
+	}
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+	public String toString1() {
+		return "User [answer=" + answer + "]";
+	}
 }

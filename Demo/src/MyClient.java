@@ -13,7 +13,7 @@ public class MyClient {
 		OutputStream os = null;
 		Socket socket = null;
 		try {
-			socket = new Socket("127.0.0.1", 6001);
+			socket = new Socket("127.0.0.1", 6005);
 
 			os = socket.getOutputStream();
 			is = socket.getInputStream();

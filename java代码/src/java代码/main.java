@@ -3,31 +3,94 @@ package java代码;
 import java.util.Scanner;
 public class main {
 
-static int result=24;
-static int score=0;
+
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner in=new Scanner(System.in );
 		System.out.println("游戏开始");
-		for(int i=1;i<=10;i++){
-			int max=9;
-			int min=1;
-			int a=(int)(Math.random()*(max-min));
-			int b=(int)(Math.random()*(max-min));
-			int c=(int)(Math.random()*(max-min));
-			int d=(int)(Math.random()*(max-min));	
+		int score=0;
+		for(int i=0;i<10;i++){
+			int sum=0;
+			int a=(int)(Math.random()*(8)+1);
+			int b=(int)(Math.random()*(8)+1);
+			int c=(int)(Math.random()*(8)+1);
+			int d=(int)(Math.random()*(8)+1);
+			String []fu=new String[3];
 			
 			System.out.println("n1\tn2\tn3\tn4");
 			System.out.println(a+"\t"+b+"\t"+c+"\t"+d);
-			System.out.println("请输入表达式：");
-			int input = in.nextInt();
-	
-            if(input==result){
+
+            Scanner sc=new Scanner(System.in);
+            for(int j=0;j<fu.length;j++){
+            	fu[j]=sc.next();
+            }
+            System.out.println(" "+fu[0]+" "+fu[1]+" "+fu[2]);
+            
+			switch(fu[0]){
+			case "+":
+				sum = a+b;
+				break;
+			case "-":
+				if(a>b){
+				sum = a-b;
+				break;
+				}
+			case "*":
+				sum = a*b;
+				break;
+			case "/":
+				sum = a/b;
+				break;
+			default:
+				System.out.println("输入错误，符号不存在！");
+				break;
+			}
+			
+			switch(fu[1]){
+			case "+":
+				sum += c;
+				break;
+			case "-":
+				if(sum>c){
+				sum -= c;
+				break;
+				}
+			case "*":
+				sum *= c;
+				break;
+			case "/":
+				sum /= c;
+				break;
+			default:
+					System.out.println("输入错误，符号不存在！");
+				break;
+			}
+			
+			switch(fu[2]){
+			case "+":
+				sum += d;
+				break;
+			case "-":
+				if(sum>d){
+					sum -= d;
+				break;
+				}
+			case "*":
+				sum *= d;
+				break;
+			case "/":
+				sum /= d;
+				break;
+			default:
+				System.out.println("输入错误，符号不存在！");
+				break;
+			}
+			System.out.println(sum); 
+            if(sum==24){
 	              System.out.println("恭喜你回答正确！！！"); 
 	              score=score+1;
-	              System.out.println("得分为"  +score); 
-	              
-
+	              System.out.println("得分为"  +score); 	              
             }else{
 	              System.out.println("很抱歉你回答错了"); 
             }           

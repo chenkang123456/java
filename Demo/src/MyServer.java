@@ -1,4 +1,4 @@
-package count;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +27,7 @@ public class MyServer {
 		Socket socket = null;
 		try {
 
-			serverSocket = new ServerSocket(6001);
+			serverSocket = new ServerSocket(6005);
 
 			System.out.println("服务器启动请选择菜单!");
 			System.out.println("\t1.玩游戏\n\t2.排行榜");
@@ -53,13 +53,15 @@ public class MyServer {
 					&& "1".equals(hm.get("pwchange"))) {
 				reply = "游戏开始！";	
 				System.out.println("开始游戏");
-				int a=(int)(Math.random()*10+1);
-				int b=(int)(Math.random()*10+1);
-				int c=(int)(Math.random()*10+1);
-				int d=(int)(Math.random()*10+1);	
+				int a=(int)(Math.random()*9+1);
+				int b=(int)(Math.random()*9+1);
+				int c=(int)(Math.random()*9+1);
+				int d=(int)(Math.random()*9+1);	
 				System.out.println("n1\tn2\tn3\tn4");
 				System.out.println(a+"\t"+b+"\t"+c+"\t"+d);
 				System.out.println("请输入：");
+				socket = serverSocket.accept();
+				is = socket.getInputStream();				
 				
 			}			
 			// 向客户端发送消息
