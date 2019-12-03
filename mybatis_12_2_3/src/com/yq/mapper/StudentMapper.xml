@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+映射文件名必须和mapper接口同名
+
+ -->
+<!DOCTYPE mapper
+ 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="com.yq.mapper.StudentMapper">
+	<select id="selectById" resultType="StudentPojo" >
+		select id,name,age,address 
+		from student 
+		<if test="id!=null">
+			where id=#{id}
+		</if>
+	</select>
+	<!-- 
+	<select id="selectByIdNameAge" parameterType="StudentPojo" resultType="studentPojo">
+		select id,name,age,address 
+		from student
+		<where> 
+		<if test="id!=null">
+			AND id=#{id}
+		</if>
+		<if test="name!=null">
+			AND name=#{name}
+		</if>
+		<if test="age!=null">
+			AND age=#{age}
+		</if>
+		<if test="address!=null">
+			AND address=#{address}
+		</if>
+		</where>
+	</select>
+	 -->
+	<select id="selectByIdNameAge2" parameterType="StudentPojo" resultType="studentPojo">
+		select id,name,age,address 
+		from student
+		<where> 
+			<choose>
+				<when test="id!=null">AND id=#{id}</when>
+				<when test="name!=null">AND name=#{name}</when>
+				<when test="age!=null">AND age=#{age}</when>
+				<when test="address!=null">AND address=#{address}</when>
+			</choose>
+		</where>
+	</select>
+	
+	<select id="selectByIds" parameterType="Object" resultType="studentPojo">
+		select id,name,age,address 
+		from student
+		<where>
+		<!-- 
+			collection：指定要循环的目标，如果是数组，必须是array
+			item：指定迭代变量
+			separator:指定每次循环的分割符
+		 -->
+			<foreach collection="array" item="id" separator="or">
+				id=#{id}
+			</foreach>
+		</where>
+	</select>
+	
+	<select id="selectByIds2" parameterType="list" resultType="studentPojo">
+		select id,name,age,address 
+		from student
+		<where>
+		<!-- 
+			collection：指定要循环的目标，如果是集合，必须是list
+			item：指定迭代变量
+			separator:指定每次循环的分割符
+			open:制定循环之前的内容
+			close:循环完成后的内容
+		 -->
+			<foreach collection="list" item="id" open="id in (" close=")" separator=",">
+				#{id}
+			</foreach>
+		</where>
+	</select>
+	
+	
+	<select id="selectByIds31" parameterType="idPojo" resultType="studentPojo">
+		select id,name,age,address 
+		from student
+		<where>
+		<!-- 
+			使用包装pojo的数组
+			collection：指定要循环的目标，如果是包装类型，值必须是属性名
+			item：指定迭代变量
+			separator:指定每次循环的分割符
+			open:制定循环之前的内容
+			close:循环完成后的内容
+		 -->
+			<foreach collection="ids1" item="id" open="id in (" close=")" separator=",">
+				#{id}
+			</foreach>
+		</where>
+	</select>
+	
+	<select id="selectByIds32" parameterType="IdPojo" resultType="studentPojo">
+		select id,name,age,address 
+		from student
+		<where>
+		<!-- 
+			使用包装pojo的集合
+			collection：指定要循环的目标，如果是包装类型，值必须是属性名
+			item：指定迭代变量
+			separator:指定每次循环的分割符
+			open:制定循环之前的内容
+			close:循环完成后的内容
+		 -->
+			<foreach collection="ids2" item="id" open="id in (" close=")" separator=",">
+				#{id}
+			</foreach>
+		</where>
+	</select>
+	
+	
+	<!-- 
+		#{}sql语句的占位符,?
+		${}sql语句拼接,如果参数是简单类型里面只能写value，如果是pojo，里面是pojo属性名
+	 -->
+	<select id="selectByNameLike" parameterType="string" resultType="studentPojo">
+		select id,name,age,address
+		from student where name like '%${value}%'
+	</select>
+	
+	<select id="selectOrder" resultType="studentPojo">
+		select id,name,age,address
+		from student order by ${col} desc
+	</select>
+</mapper>

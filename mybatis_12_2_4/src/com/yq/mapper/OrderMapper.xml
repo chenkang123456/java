@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+映射文件名必须和mapper接口同名
+
+ -->
+<!DOCTYPE mapper
+ 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="com.yq.mapper.OrderMapper">
+<resultMap type="OrderPojo" id="rm1">
+<!-- 指定属性和列的映射 -->
+	<id column="oid" property="id"/>
+	<result column="user_id" property="user_id"/>
+	<result column="number" property="number"/>
+	<result column="createtime" property="createTime"/>
+	<result column="note" property="note"/>
+	<!--
+	association
+	将关联对象映射到单独pojo对象中
+	property:指定pojo中关联对象属性
+	javaType：指定关联对象的类型，权限定名
+	 -->
+	<association property="user" javaType="UserPojo">
+		<id column="uid" property="id"/>
+		<result column="username" property="username"/>
+		<result column="birthday" property="birthday"/>
+		<result column="sex" property="sex"/>
+		<result column="address" property="address"/>
+	</association>
+</resultMap>
+	<select id="selectById" parameterType="int" resultMap="rm1">
+		SELECT o.id oid,user_id,number,createtime,note,u.id uid,username,birthday,sex,address
+		FROM orders o LEFT JOIN USER u ON o.user_id=u.id
+		where o.id=#{id}
+	</select>
+	<resultMap type="OrderPojo" id="rm2" extends="rm1">
+	 <!-- 
+		封装和订单对应的明细集合
+		collection:关联对象映射到pojo集合中
+		property：pojo中关联对象集合的属性名
+		ofType：指定集合的元素类型
+	 -->
+	 	<collection property="details" ofType="OrderDetailPojo">
+	 		<id property="id" column="odid"/>
+	 		<result property="orders_id" column="orders_id"/>
+			<result property="items_id" column="items_id"/>
+			<result property="items_num" column="items_num"/>
+	 	</collection>
+	</resultMap>
+	<select id="selectById2" parameterType="int" resultMap="rm2">
+		SELECT o.id oid,user_id,number,createtime,note,u.id uid,username,birthday,sex,address, od.id odid,orders_id,items_id,items_num
+		FROM orders o LEFT JOIN USER u ON o.user_id=u.id
+		LEFT JOIN orderdetail od ON o.id = od.orders_id
+		WHERE o.id=#{id};
+	</select>
+</mapper>

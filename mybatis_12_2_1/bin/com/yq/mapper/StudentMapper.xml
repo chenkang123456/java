@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+映射文件名必须和mapper接口同名
+
+ -->
+<!DOCTYPE mapper
+ 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="com.yq.mapper.StudentMapper">
+	<select id="selectCount" resultType="_int">
+		select count(id) from student;
+	</select>
+	<select id="selectById" parameterType="int" resultType="map">
+		select id,name,age,address
+		from student where id=#{id}
+	</select>
+	<!-- 返回pojo集合时，resultType指定集合元素的类型- -->
+	<select id="selectAll" resultType="studentPojo">
+		select id,name,age,address
+		from student
+	</select>
+	
+	<!-- 定义resultmap：结果映射，手动指定列名和pojo属性名的对应关系
+	type：指定最终映射成什么类型
+	id：resultmap的唯一标识，自定义	
+	 -->
+	
+	<resultMap type="StudentPojo" id="rm1">
+		<!--定义主键映射 
+		property：指定对应pojo中的属性名
+		column：指定结果集中对应的列名
+		 -->
+		 <id column="ida" property="id"/>
+		 <!-- result定义非主键列 -->
+		  <result column="namea" property="name"/>
+		  <result column="agea" property="age"/>
+		  <result column="addressa" property="address"/>
+	</resultMap>
+	<!-- 用resultMap属性引用 -->
+	<select id="selectByIdResultMap" parameterType="int" resultMap="rm1">
+		select id ida,name namea,age agea,address addressa
+		from student where id=#{id}
+	</select>
+	<!-- 
+		userGenerateKeys:指定使用数据库底层自增策略
+		keyColumn ：指定主键列名
+	 -->
+	<insert id="insertStudent" parameterType="StudentPojo" useGeneratedKeys="true" keyColumn="id">
+		insert into student (name,age,address) values(
+		#{name,jdbcType=VARCHAR},
+		#{age,jdbcType=INTEGER},
+		#{address,jdbcType=VARCHAR}
+		);
+	</insert>
+	
+	<insert id="insertStudent2" parameterType="StudentPojo">
+		<!-- 
+			order:指定查询主键语句的执行时机。
+			resultType:指定查询结果类型
+			keyProperty:指定pojo中的主属性名
+		 -->
+		<selectKey order="AFTER" resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+		insert into student (name,age,address) values(
+		#{name,jdbcType=VARCHAR},
+		#{age,jdbcType=INTEGER},
+		#{address,jdbcType=VARCHAR}
+		);
+	</insert>
+	
+	<delete id="deleteStudent" parameterType="int">
+		delete from student where id=#{id}
+	</delete>
+	
+</mapper>

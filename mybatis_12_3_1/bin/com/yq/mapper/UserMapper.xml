@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+映射文件名必须和mapper接口同名
+
+ -->
+<!DOCTYPE mapper
+ 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="com.yq.mapper.UserMapper">
+	<resultMap type="UserPojo" id="rm1">
+		<id column="uid" property="id"/>
+		<result column="username" property="username"/>
+		<result column="birthday" property="birthday"/>
+		<result column="sex" property="sex"/>
+		<result column="address" property="address"/>
+		<collection property="orders" ofType="OrderPojo" javaType="list">
+			<id column="oid" property="id"/>
+			<collection property="details" ofType="OrderDetailPojo">
+				<id column="odid" property="id"/>
+				<association property="item" javaType="ItemsPojo">
+					<id column="iid" property="id"/>
+					<result column="name" property="name"/>
+					<result column="price" property="price"/>
+					<result column="detail" property="detail"/>
+					<result column="pic" property="pic"/>
+					<result column="createtime" property="createTime"/>
+				</association>
+			</collection>
+		</collection>
+	</resultMap>
+	<select id="selectAll" resultMap="rm1">
+		SELECT u.id uid,username,birthday,sex,address,o.id oid,od.id odid,i.id iid,name,price,detail,pic,i.createtime 
+		FROM user u LEFT JOIN orders o ON o.user_id=u.id
+		LEFT JOIN orderdetail od ON od.orders_id=o.id
+		LEFT JOIN items i ON od.items_id=i.id
+	</select>
+</mapper>

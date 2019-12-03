@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 定义属性值或读取属性properties文件 -->
+	<properties resource="com/yq/mapper/db.properties">
+		<property name="user" value="root"/>
+	</properties>
+	<!-- 设置框架运行环境 -->
+	<settings>
+		<setting name="logImpl" value="LOG4J"/>
+	</settings>
+	<!-- 设置类别名 -->
+	<typeAliases>
+		  <typeAlias type="com.yq.pojo.StudentPojo" alias="studentPojo"/>
+		  <package name="com.yq.pojo"/><!-- 默认使用类名作为别名，如果首字母小写也行 -->
+	</typeAliases>
+	<environments default="default"><!-- 多个环境 -->
+		<environment id="default"><!-- 一个环境 -->
+			<transactionManager type="JDBC"/> <!-- 事务管理 -->
+				<dataSource type="POOLED"><!-- 数据源 -->
+					<property name="driver" value="${driver}"/>
+					<property name="url" value="${url}" />
+					<property name="username" value="${user}"/>
+					<property name="password" value="${password}"/>
+					<property name="driver.useSSL" value="true"/>
+				</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="com/yq/mapper/StudentMapper.xml"/>
+	</mappers>
+</configuration>
